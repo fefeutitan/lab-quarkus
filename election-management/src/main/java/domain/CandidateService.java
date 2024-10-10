@@ -20,6 +20,17 @@ public class CandidateService {
     }
 
     public Candidate findById(String id) {
-        return repository.findById(id).orElseThrow();
+        return repository.findById(id).orElseThrow(() -> new CandidateNotFoundException("Candidato não encontrado com ID: " + id));
+    }
+
+    public List<Candidate> findByQuery(CandidateQuery query) {
+    	// Certifique-se de que o repositório tenha esse método
+        return repository.findByQuery(query); 
+    }
+
+    public void delete(String id) {
+        if (!repository.delete(id)) {
+            throw new CandidateNotFoundException("Candidato não encontrado com ID: " + id);
+        }
     }
 }
