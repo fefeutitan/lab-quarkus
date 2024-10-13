@@ -26,7 +26,7 @@ public class ElectionService {
     }
 
     public void submit() {
-        Election election = Election.create(candidateService.findAll());
+        Election election = Election.create(candidateService.findAll(0, 0));
         repositories.forEach(repository -> repository.submit(election));
     }
 }

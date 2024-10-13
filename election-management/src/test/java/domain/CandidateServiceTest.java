@@ -41,7 +41,7 @@ class CandidateServiceTest {
 
         when(repository.findAll()).thenReturn(candidates);
 
-        List<Candidate> result = service.findAll();
+        List<Candidate> result = service.findAll(0, 0);
 
         verify(repository).findAll();
         verifyNoMoreInteractions(repository);

@@ -30,20 +30,20 @@ public class CandidateApi {
 
     @GET
     @Produces("application/json")
-    public List<Candidate> list(@QueryParam("page") @DefaultValue("0") int page, 
-                                 @QueryParam("size") @DefaultValue("10") int size) {
-        return service.findAll(page, size).stream().map(Candidate::fromDomain).toList();
+    public List<Candidate> findAll(@QueryParam("page") @DefaultValue("0") int page, 
+                                   @QueryParam("size") @DefaultValue("10") int size) {
+        return service.findAll(page, size).stream()
+                      .map(Candidate::fromDomain)
+                      .toList();
     }
 
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") String id) {
         if (service.delete(id)) {
-        	// Retorna 204 No Content se a remoção for bem-sucedida
-            return Response.noContent().build(); 
+            return Response.noContent().build(); // Retorna 204 No Content se a remoção for bem-sucedida
         } else {
-        	// Retorna 404 Not Found se o candidato não for encontrado
-            return Response.status(Response.Status.NOT_FOUND).build(); 
+            return Response.status(Response.Status.NOT_FOUND).build(); // Retorna 404 Not Found se o candidato não for encontrado
         }
     }
 }

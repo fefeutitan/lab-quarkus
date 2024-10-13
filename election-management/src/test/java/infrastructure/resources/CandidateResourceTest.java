@@ -42,13 +42,13 @@ class CandidateResourceTest {
     void list() {
         var out = Instancio.stream(Candidate.class).limit(4).toList();
 
-        when(api.list()).thenReturn(out);
+        when(api.findAll(0, 0)).thenReturn(out);
 
         var response = given()
                 .when().get()
                 .then().statusCode(RestResponse.StatusCode.OK).extract().as(Candidate[].class);
 
-        verify(api).list();
+        verify(api).findAll(0, 0);
         verifyNoMoreInteractions(api);
 
         assertEquals(out, Arrays.stream(response).toList());

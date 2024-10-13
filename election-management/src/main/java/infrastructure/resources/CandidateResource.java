@@ -45,6 +45,6 @@ public class CandidateResource {
 
     @GET
     public List<Candidate> list() {
-        return api.list();
+        return api.findAll(0, 0);
     }
 }

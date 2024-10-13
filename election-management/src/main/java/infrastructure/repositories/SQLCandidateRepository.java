@@ -44,13 +44,34 @@ public class SQLCandidateRepository implements CandidateRepository {
                             .toList();
     }
 
-    private Predicate[] conditions(CandidateQuery query,
-                                   CriteriaBuilder cb,
-                                   Root<infrastructure.repositories.entities.Candidate> root) {
-        return Stream.of(query.ids().map(id -> cb.in(root.get("id")).value(id)),
-                         query.name().map(name -> cb.or(cb.like(cb.lower(root.get("familyName")), name.toLowerCase() + "%"),
-                                                        cb.like(cb.lower(root.get("givenName")), name.toLowerCase() + "%"))))
-                     .flatMap(Optional::stream)
-                     .toArray(Predicate[]::new);
+    private Predicate[] conditions(CandidateQuery query, CriteriaBuilder cb, Root<infrastructure.repositories.entities.Candidate> root) {
+    	return Stream.of(
+    			query.getIds().stream().map(id -> cb.in(root.get("id")).value(id)),
+
+    			query.getName().stream().map(name -> 
+    			cb.or(cb.like(cb.lower(root.get("familyName")), name.toLowerCase() + "%"),
+    					cb.like(cb.lower(root.get("givenName")), name.toLowerCase() + "%"))
+    					)
+    			)
+    			.flatMap(s -> s) 
+    			.toArray(Predicate[]::new);
     }
+
+    @Override
+    @Transactional
+    public boolean delete(String id) {
+        var candidate = entityManager.find(infrastructure.repositories.entities.Candidate.class, id);
+        if (candidate != null) {
+            entityManager.remove(candidate);
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public List<Candidate> findByQuery(CandidateQuery query) {
+        return find(query);
+    }
+
 }

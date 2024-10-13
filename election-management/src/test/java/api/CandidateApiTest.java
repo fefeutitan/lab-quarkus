@@ -70,11 +70,11 @@ class CandidateApiTest {
     void list() {
         var candidates = Instancio.stream(Candidate.class).limit(10).toList();
 
-        when(candidateService.findAll()).thenReturn(candidates);
+        when(candidateService.findAll(0, 0)).thenReturn(candidates);
 
-        var response = candidateApi.list();
+        var response = candidateApi.findAll(0, 0);
 
-        verify(candidateService).findAll();
+        verify(candidateService).findAll(0, 0);
         verifyNoMoreInteractions(candidateService);
 
         assertEquals(candidates.stream().map(api.dto.out.Candidate::fromDomain).toList(), response);

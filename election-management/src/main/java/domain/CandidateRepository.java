@@ -57,6 +57,9 @@ public interface CandidateRepository {
      * Remove um candidato pelo seu ID.
      *
      * @param id O ID do candidato a ser removido.
+     * @return 
      */
-    void delete(String id);
+    boolean delete(String id);
+
+	List<Candidate> findByQuery(CandidateQuery query);
 }

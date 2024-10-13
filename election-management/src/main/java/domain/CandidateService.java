@@ -15,7 +15,7 @@ public class CandidateService {
         repository.save(candidate);
     }
 
-    public List<Candidate> findAll() {
+    public List<Candidate> findAll(int pageNumber, int pageSize) {
         return repository.findAll();
     }
 
@@ -28,9 +28,12 @@ public class CandidateService {
         return repository.findByQuery(query); 
     }
 
-    public void delete(String id) {
-        if (!repository.delete(id)) {
+    public boolean delete(String id) {
+        boolean deleted = repository.delete(id);
+        if (!deleted) {
             throw new CandidateNotFoundException("Candidato não encontrado com ID: " + id);
         }
+        return deleted;
     }
+
 }
